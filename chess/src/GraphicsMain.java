@@ -21,6 +21,8 @@ public class GraphicsMain extends JFrame{
     //test test test
 	    
 	//adding a new thing
+	    
+	//adding another comment
 	}
 
 }
