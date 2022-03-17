@@ -19,6 +19,8 @@ public class GraphicsMain extends JFrame{
 	    
     //comments for days
     //test test test
+	    
+	//adding a new thing
 	}
 
 }
