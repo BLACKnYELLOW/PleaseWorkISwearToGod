@@ -17,10 +17,8 @@ public class GraphicsMain extends JFrame{
 	    window.setLocationRelativeTo(null);
 	    window.setVisible(true);
 	    
-	    //test
-	    
-	    //these better show up
-	    //woah
+    //comments for days
+    //test test test
 	}
 
 }
