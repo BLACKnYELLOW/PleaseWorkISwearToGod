@@ -16,6 +16,8 @@ public class GraphicsMain extends JFrame{
 	    window.pack();
 	    window.setLocationRelativeTo(null);
 	    window.setVisible(true);
+	    
+	    //asher comments
 	}
 
 }
