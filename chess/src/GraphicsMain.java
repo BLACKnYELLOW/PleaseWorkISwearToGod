@@ -20,6 +20,7 @@ public class GraphicsMain extends JFrame{
 	    //test
 	    
 	    //these better show up
+	    //woah
 	}
 
 }
