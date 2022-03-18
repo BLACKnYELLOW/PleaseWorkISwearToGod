@@ -14,6 +14,8 @@ import java.awt.event.MouseListener;
 import java.awt.Color;
 import javax.swing.JPanel;
 
+
+//Nathan is cool
 public class GraphicsPanel extends JPanel implements MouseListener{
 		
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
