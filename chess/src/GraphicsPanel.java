@@ -43,6 +43,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			board[3][column] = new Space();
 			board[4][column] = new Space();
 			board[5][column] = new Space();
+			board[0][column] = new Pawn(1);
+			board[7][column] = new Pawn(2);
 		}
 		
 		// add the rest of the pieces to the board.
@@ -51,6 +53,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		from = new Location();
 		to = new Location();
 		turn = 1;
+		
+		System.out.println("It goes this far at least");
 	}
 	
 	// method: paintComponent
@@ -105,6 +109,21 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		if(click == false){
 			from.column = e.getX()/90;
 			from.row = e.getY()/90;
+			
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					if (board[from.row][from.column].isValidMove(from, new Location(i, j), board))
+					{
+						board[from.row][from.column].setValid(true);
+					}
+					else
+					{
+						board[from.row][from.column].setValid(false);
+					}
+				}
+			}
 			click = true;
 		}
 		else{
@@ -124,6 +143,14 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					turn = 1;
 			}
 			printBoard();
+			
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					board[from.row][from.column].setValid(false);
+				}
+			}
 			
 			click = false;
 		}
