@@ -47,6 +47,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			board[7][column] = new Pawn(2);
 		}
 		
+		
 		// add the rest of the pieces to the board.
 		
 		click = false;
@@ -96,9 +97,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		// instead of drawing a single piece you should loop through the two-dimensional array and draw each piece except for 
 		// empty spaces.
 		for(int column = 0; column<8; column++)
+		{
+			
 			for(int row = 0; row < 8; row++)
+			{
 				board[row][column].draw(g2, this, new Location(row,column));
-		
+				
+				if (board[row][column].isValid())
+				{
+					System.out.println("something");
+					g2.setColor(new Color(100, 100, 100, 100));
+					g2.fillOval(column * 90 + 37, row * 90 + 37, 25, 25);
+				}
+			}
+		}
 		
 	}
 
@@ -114,13 +126,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			{
 				for (int j = 0; j < 8; j++)
 				{
-					if (board[from.row][from.column].isValidMove(from, new Location(i, j), board))
+					if (board[from.row][from.column].isValidMove(from, new Location(i, j), board) && board[from.row][from.column].getTeam() == turn)
 					{
-						board[from.row][from.column].setValid(true);
+						board[i][j].setValid(true);
 					}
 					else
 					{
-						board[from.row][from.column].setValid(false);
+						board[i][j].setValid(false);
 					}
 				}
 			}
@@ -131,7 +143,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			to.row = e.getY()/90;
 			
 			
-			if(board[from.row][from.column].getTeam() == turn && board[from.row][from.column].isValidMove(from, to, board)){
+			if(board[to.row][to.column].isValid()){
 				
 				// move piece
 				board[to.row][to.column] = board[from.row][from.column];
@@ -148,7 +160,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			{
 				for (int j = 0; j < 8; j++)
 				{
-					board[from.row][from.column].setValid(false);
+					board[i][j].setValid(false);
 				}
 			}
 			
