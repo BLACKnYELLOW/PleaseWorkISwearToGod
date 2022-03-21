@@ -129,8 +129,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				
 				if (board[row][column].isValid())
 				{
-					g2.setColor(new Color(100, 100, 100, 100));
-					g2.fillOval(column * 90 + 37, row * 90 + 37, 25, 25);
+					g2.setColor(new Color(90, 90, 90, 150));
+					g2.fillOval(column * 90 + 36, row * 90 + 36, 25, 25);
 				}
 			}
 		}
