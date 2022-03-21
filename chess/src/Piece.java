@@ -126,6 +126,22 @@ public class Piece {
 		return false;
 	}
 	
+	public boolean isValidKingMove(Location from, Location to, Piece[][]b) {
+		if(
+				/*right UP*/(to.getColumn()==from.getColumn()+1 &&to.getRow()==from.getRow()+1) 
+				/*Right down*/|| (to.getColumn()==from.getColumn()+1 &&to.getRow()==from.getRow()-1) 
+				/*left up*/||(to.getColumn()==from.getColumn()-1 &&to.getRow()==from.getRow()+1)
+				/*Left down*/||(to.getColumn()==from.getColumn()-1 &&to.getRow()==from.getRow()-1)
+				/*left*/|| (to.getColumn()==from.getColumn()-1 &&to.getRow()==from.getRow())
+				/*right*/|| (to.getColumn()==from.getColumn()+1 &&to.getRow()==from.getRow())
+				/*Up*/|| (to.getColumn()==from.getColumn() &&to.getRow()==from.getRow()+1)
+				/*Down*/|| (to.getColumn()==from.getColumn() &&to.getRow()==from.getRow()-1)
+				) {
+			return true;	
+		}
+		return false;
+	}
+	
 	// method: isValidDiagonalMove
 	// description: This method checks to see if a move is valid vertical move. You should use it in the bishop and queen class.
 	// Returns whether or not the attempted move is valid.

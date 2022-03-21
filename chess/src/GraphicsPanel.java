@@ -59,6 +59,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			board[0][7] = new Rook(1);
 			//board[0][4] = new King(1);
 			board[0][4] = new Queen(1);
+			board[0][3]=new King(1);
 			
 			
 			
@@ -71,6 +72,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			board[7][7] = new Rook(2);
 			//board[7][5] = new King(2);
 			board[7][4] = new Queen(2);
+			board[7][3]=new King(2);
 			
 			
 
