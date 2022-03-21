@@ -21,6 +21,8 @@ public class Piece {
 	// alternatiely you can leave empty spots empty and check for null instead of 0.
 	private int offset; 				// used for drawing images because they all have different widths.
 
+	private boolean valid;
+	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Piece(){
 		this(0,0);
@@ -42,7 +44,8 @@ public class Piece {
 		else
 			setImageIcon("images/" + imagePath + team + ".png");
 		this.offset = offset;
-		this.setTeam(team);			
+		this.setTeam(team);		
+		setValid(false);
 	}
 
 	protected void setImageIcon(String imagePath){
@@ -182,5 +185,13 @@ public class Piece {
 		Piece p = (Piece)o;
 
 		return p.getTeam() == this.getTeam();
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 }
