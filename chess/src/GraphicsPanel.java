@@ -49,7 +49,29 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		
 		
 		// add the rest of the pieces to the board.
-		
+			//team 1
+			board[0][2] = new Bishop(1);
+			board[0][5] = new Bishop(1);
+			//board[0][1] = new Knight(1);
+			//board[0][6] = new Knight(1);
+			//board[0][0] = new Rook(1);
+			//board[0][7] = new Rook(1);
+			//board[0][4] = new King(1);
+			//board[0][5] = new Queen(1);
+			
+			
+			
+			//team 2
+			board[7][2] = new Bishop(2);
+			board[7][5] = new Bishop(2);
+			//board[7][0] = new Knight(2);
+			//board[7][6] = new Knight(2);
+			//board[7][0] = new Rook(2);
+			//board[7][7] = new Rook(2);
+			//board[7][5] = new King(2);
+			//board[7][4] = new Queen(2);
+			
+			
 		click = false;
 		from = new Location();
 		to = new Location();
