@@ -81,21 +81,19 @@ public class Piece {
 	// @param - Piece[][]b - the chess board.  a two dimensional array of pieces.
 	// return - boolean - true if the move is valid 
 	public boolean isValidHorizontalMove(Location from, Location to, Piece[][]b){
-		boolean success = false;
-
 		// check to make sure that the move remains in the same row.
-		if(from.getRow() != to.getRow())
-			return false;
+		if(from.getRow() != to.getRow() || from.getColumn() == to.getColumn())
+				return false;
 
 		// look for any pieces in between the starting and ending Locations.
 		// if you find location that isn't empty than return false.
-		for(int i = Math.min(from.getRow(), to.getRow())+1; i<Math.max(from.getRow(), to.getRow()); i++){
-			if(b[i][from.getColumn()].getTeam()!=0) 
-				return false;
-		}
+		for(int i = Math.min(from.getColumn(), to.getColumn())+1; i<Math.max(from.getColumn(), to.getColumn()); i++){
+				if(b[from.getRow()][i].getTeam()!=0) 
+					return false;
+				}
 
-		return true;
-	}
+				return true;
+		}
 
 	// method: isValidVerticalMove
 	// description: This method checks to see if a move is valid vertical move. You should use it in the rook and queen class.
@@ -105,22 +103,29 @@ public class Piece {
 	// @param - Piece[][]b - the chess board.  a two dimensional array of pieces.
 	// return - boolean - true if the move is valid 
 	public boolean isValidVerticalMove(Location from, Location to, Piece[][]b){
-		boolean success = false;
-
 		// check to make sure that the move remains in the same column.
-		if(from.getColumn() != to.getColumn())
-			return false;
+		if(from.getColumn() != to.getColumn() || from.getRow() == to.getRow())
+				return false;
 
 		// look for any pieces in between the starting and ending Locations.
 		// if you find location that isn't empty than return false.
-		for(int i = Math.min(from.getColumn(), to.getColumn())+1; i<Math.max(from.getColumn(), to.getColumn()); i++){
-			if(b[from.getRow()][i].getTeam()!=0) 
+		for(int i = Math.min(from.getRow(), to.getRow())+1; i<Math.max(from.getRow(), to.getRow()); i++){
+			if(b[i][from.getColumn()].getTeam()!=0) 
 				return false;
+			}
+
+			return true;
 		}
 
-		return true;
+	public boolean isValidKnightMove(Location from, Location to, Piece[][]b)
+	{
+		if (((to.getRow() == from.getRow() + 2 || to.getRow() == from.getRow() - 2) && (to.getColumn() == from.getColumn() + 1 || to.getColumn() == from.getColumn() - 1)) || ((to.getRow() == from.getRow() + 1 || to.getRow() == from.getRow() - 1) && (to.getColumn() == from.getColumn() + 2 || to.getColumn() == from.getColumn() - 2)) )
+		{
+			return true;
+		}
+		return false;
 	}
-
+	
 	// method: isValidDiagonalMove
 	// description: This method checks to see if a move is valid vertical move. You should use it in the bishop and queen class.
 	// Returns whether or not the attempted move is valid.
