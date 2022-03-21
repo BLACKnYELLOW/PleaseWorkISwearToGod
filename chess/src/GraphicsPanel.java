@@ -43,8 +43,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			board[3][column] = new Space();
 			board[4][column] = new Space();
 			board[5][column] = new Space();
-			board[0][column] = new Pawn(1);
-			board[7][column] = new Pawn(2);
+			board[0][column] = new Space();
+			board[7][column] = new Space();
 		}
 		
 		
