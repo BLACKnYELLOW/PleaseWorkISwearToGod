@@ -79,7 +79,27 @@ public class Piece {
 		return true;
 	}
 
-
+	public boolean doesItGoIntoCheck(Location from, Location to, Piece[][] b)
+	{
+		Piece[][] pb = new Piece[8][8];
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				pb[i][j] = b[i][j];
+			}
+		}
+		
+		pb[to.row][to.column] = pb[from.row][from.column];
+		pb[from.row][from.column] = new Space();
+		
+		if (pb[to.row][to.column].isPieceInCheck(to, pb))
+		{
+			return false;
+		}
+		
+		return true;
+	}
 
 	// method: isValidHorizontalMove
 	// description: This method checks to see if a move is valid horizontal move. You should use it in the rook and queen class.

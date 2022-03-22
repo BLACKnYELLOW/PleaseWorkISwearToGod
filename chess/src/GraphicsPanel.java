@@ -190,10 +190,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			//while in check then if neither are mated decide which move
 			if ((board[blackKing.getRow()][blackKing.getColumn()].isInCheck() || board[whiteKing.getRow()][whiteKing.getColumn()].isInCheck()))
 			{
-				if (whiteInMate == false && blackInMate == false)
-				{
 					ArrayList<Location> moves = new ArrayList<>();
-					System.out.println("this ran");
 					moves = board[from.row][from.column].getMovesFrom(from.row, from.column);
 					
 					if (moves.size() != 0)
@@ -203,8 +200,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 							board[m.row][m.column].setValid(true);
 						}
 					}
-					
-				}
 			} else {
 				//check all moves to see if they are valid
 				for (int i = 0; i < 8; i++)
@@ -308,6 +303,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					System.out.println("this");
 					printBoard();
 					Location white = new Location();
+					Location black = new Location();
 					//for white
 					if (turn == 2)
 					{
@@ -386,18 +382,37 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 									{
 										for (int d = 0; d < 8; d++)
 										{
-											if (board[a][b].isValidMove(new Location(a, b), new Location(c, d), board))
-											{
 												//checking each move
-												pretendBoard = board;
-												pretendBoard[c][d] = pretendBoard[a][b];
-												pretendBoard[a][b] = new Space();
-												//if a move moves out of check add it to an arraylist
-												if (!(pretendBoard[blackKing.getRow()][blackKing.getColumn()].isInCheck()))
+												if (board[a][b].isValidMove(new Location(a, b), new Location(c, d), board))
 												{
-													board[a][b].addMove(new Move(a, b, c, d));
+													for (int i = 0; i < 8; i++)
+													{
+														for (int j = 0; j < 8; j++)
+														{
+															pretendBoard[i][j] = board[i][j];
+														}
+													}
+													pretendBoard[c][d] = pretendBoard[a][b];
+													pretendBoard[a][b] = new Space();
+													for (int k = 0; k < 8; k++)
+													{
+														for (int l = 0; l < 8; l++)
+														{
+															if (pretendBoard[k][l] instanceof King && pretendBoard[k][l].getTeam() == 2)
+															{
+																black.setRow(k);
+																black.setColumn(l);
+															}
+														}
+													}
+													
+													//if a move moves out of check add it to an arraylist
+													if (!(pretendBoard[black.row][black.column].isPieceInCheck(black, pretendBoard)))
+													{
+														board[a][b].addMove(new Move(a, b, c, d));
+													}
 												}
-											}
+											
 										}
 									}
 								}
@@ -416,6 +431,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 						//can declare black in checkmate
 						blackInMate = temp;
+						System.out.println(blackInMate);
 					}
 				}
 				
