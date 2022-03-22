@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 //Nathan is cool
 public class GraphicsPanel extends JPanel implements MouseListener{
-		
+
 	private final int SQUARE_WIDTH = 90;    // The width of one space on the board.  Constant used for drawing board.
 	private final int OFFSET = 5;
 	private Location from;   			    // holds the coordinates of the square that the user would like to move from.
@@ -29,23 +29,23 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	private boolean blackInMate;
 	private boolean whiteInMate;
 	private boolean click;   				// false until the game has started by somebody clicking on the board.  should also be set to false
-	                         				// after an attempted move.
+	// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
 	private Piece[][] pretendBoard;
 	private Piece[][] boardBackup;
 	private int turn;						// used to keep track of who's turn it is - should only be 1 or 2.
-	
+
 	public GraphicsPanel(){
 		setPreferredSize(new Dimension(SQUARE_WIDTH*8+OFFSET*2,SQUARE_WIDTH*8+OFFSET*2));   // Set these dimensions to the width 
-        											 // of your background picture.   
-        this.setFocusable(true);					 // for keylistener
+		// of your background picture.   
+		this.setFocusable(true);					 // for keylistener
 		this.addMouseListener(this);
-		
+
 		// instantiate the instance variables.
 		board = new Piece[8][8];
 		pretendBoard = new Piece[8][8];
 		boardBackup = new Piece[8][8];
-		
+
 		for(int column = 0; column<8; column++){
 			board[1][column] = new Pawn(1);
 			board[2][column] = new Space();
@@ -55,42 +55,42 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			board[6][column] = new Pawn(2);
 			board[0][column] = new Space();
 		}
-		
+
 
 		// add the rest of the pieces to the board.
-			//team 1
-			board[0][2] = new Bishop(1);
-			board[0][5] = new Bishop(1);
-			board[0][1] = new Knight(1);
-			board[0][6] = new Knight(1);
-			board[0][0] = new Rook(1);
-			board[0][7] = new Rook(1);
-			board[0][4] = new Queen(1);
-			board[0][3] = new King(1);
-			whiteKing = new Location(0, 3);
-			
-			
-			//team 2
-			board[7][2] = new Bishop(2);
-			board[7][5] = new Bishop(2);
-			board[7][1] = new Knight(2);
-			board[7][6] = new Knight(2);
-			board[7][0] = new Rook(2);
-			board[7][7] = new Rook(2);
-			board[7][4] = new Queen(2);
-			board[7][3] = new King(2);
-			blackKing = new Location(7, 3);
-			
+		//team 1
+		board[0][2] = new Bishop(1);
+		board[0][5] = new Bishop(1);
+		board[0][1] = new Knight(1);
+		board[0][6] = new Knight(1);
+		board[0][0] = new Rook(1);
+		board[0][7] = new Rook(1);
+		board[0][4] = new Queen(1);
+		board[0][3] = new King(1);
+		whiteKing = new Location(0, 3);
+
+
+		//team 2
+		board[7][2] = new Bishop(2);
+		board[7][5] = new Bishop(2);
+		board[7][1] = new Knight(2);
+		board[7][6] = new Knight(2);
+		board[7][0] = new Rook(2);
+		board[7][7] = new Rook(2);
+		board[7][4] = new Queen(2);
+		board[7][3] = new King(2);
+		blackKing = new Location(7, 3);
+
 
 		click = false;
 		from = new Location();
 		to = new Location();
-		
+
 		blackInMate = false;
 		whiteInMate = false;
 		turn = 1;
 	}
-	
+
 	// method: paintComponent
 	// description: This method will paint the items onto the graphics panel.  This method is called when the panel is
 	//   			first rendered.  It can also be called by this.repaint()
@@ -101,7 +101,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			g2.setColor(Color.WHITE);
 		else
 			g2.setColor(Color.LIGHT_GRAY);
-		
+
 		g2.fillRect(0,0,SQUARE_WIDTH*8+OFFSET*2,SQUARE_WIDTH*8+OFFSET*2);
 		// Draw the board
 		g2.setColor(Color.gray);
@@ -109,45 +109,45 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		g2.drawLine(OFFSET, SQUARE_WIDTH*8+OFFSET, SQUARE_WIDTH*8+OFFSET, SQUARE_WIDTH*8+OFFSET);
 		g2.drawLine(OFFSET, OFFSET, SQUARE_WIDTH*8+OFFSET, 0+OFFSET);
 		g2.drawLine(OFFSET, OFFSET, OFFSET, SQUARE_WIDTH*8+OFFSET);
-		
+
 		for(int i = 0; i <8; i+=2)
 			for (int j = 0; j<8; j+=2){
 				g2.setColor(Color.gray);
 				g2.fillRect(i*SQUARE_WIDTH+OFFSET,j*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 			}
-		
+
 		for(int i = 1; i <8; i+=2)
 			for (int j = 1; j<8; j+=2){
 				g2.setColor(Color.gray);
 				g2.fillRect(i*SQUARE_WIDTH+OFFSET,j*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 			}
-		
+
 		if(click == true){
 			g2.setColor(Color.YELLOW);
 			g2.fillRect(from.column*SQUARE_WIDTH+OFFSET,from.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 		}	
-		
+
 		if (board[blackKing.getRow()][blackKing.getColumn()].isInCheck())
 		{
 			g2.setColor(Color.RED);
 			g2.fillRect(blackKing.column*SQUARE_WIDTH+OFFSET,blackKing.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 		}
-		
+
 		if (board[whiteKing.getRow()][whiteKing.getColumn()].isInCheck())
 		{
 			g2.setColor(Color.RED);
 			g2.fillRect(whiteKing.column*SQUARE_WIDTH+OFFSET,whiteKing.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 		}
-		
+
 		// instead of drawing a single piece you should loop through the two-dimensional array and draw each piece except for 
 		// empty spaces.
 		for(int column = 0; column<8; column++)
 		{
-			
+
 			for(int row = 0; row < 8; row++)
 			{
 				board[row][column].draw(g2, this, new Location(row,column));
-				
+
 				if (board[row][column].isValid())
 				{
 					g2.setColor(new Color(90, 90, 90, 150));
@@ -155,7 +155,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
-		
+
 		if (whiteInMate)
 		{
 			g2.setColor(Color.WHITE);
@@ -164,7 +164,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			g2.setFont(new Font("serif", Font.PLAIN, 50));
 			g2.drawString("White Wins!", 220, 300);
 		}
-		
+
 		if (blackInMate) 
 		{
 			g2.setColor(Color.BLACK);
@@ -173,20 +173,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			g2.setFont(new Font("serif", Font.PLAIN, 50));
 			g2.drawString("Black Wins!", 220, 300);
 		}
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// use math to figure out the row and column that was clicked.
-		
 
-	
-		
+
+
+
 		if(click == false){
 			from.column = e.getX()/90;
 			from.row = e.getY()/90;
-			
+
 			//while in check then if neither are mated decide which move
 			if ((board[blackKing.getRow()][blackKing.getColumn()].isInCheck() || board[whiteKing.getRow()][whiteKing.getColumn()].isInCheck()))
 			{
@@ -195,7 +195,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					ArrayList<Location> moves = new ArrayList<>();
 					System.out.println("this ran");
 					moves = board[from.row][from.column].getMovesFrom(from.row, from.column);
-					
+
 					if (moves.size() != 0)
 					{
 						for (Location m : moves)
@@ -203,7 +203,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 							board[m.row][m.column].setValid(true);
 						}
 					}
-					
+
 				}
 			} else {
 				//check all moves to see if they are valid
@@ -222,21 +222,25 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					}
 				}
 			}
-				click = true;
+			click = true;
 		}
-		
-		
+
+
 		else{
 			to.column = e.getX()/90;
 			to.row = e.getY()/90;
-			
+
 			//if the space selected in the click has a dot
 			if(board[to.row][to.column].isValid()){
+
+				
 				
 				// move piece
 				board[to.row][to.column] = board[from.row][from.column];
 				board[from.row][from.column] = new Space();
 				
+				
+
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 8; j++)
@@ -244,7 +248,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						board[i][j].setValidMoves(new ArrayList<Move>());
 					}
 				}
-				
+
 				//remember where the kings are
 				for (int i = 0; i < 8; i++)
 				{
@@ -261,7 +265,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 					}
 				}
-				
+
 				//nothing is in check
 				for (int x = 0; x < 8; x++)
 				{
@@ -270,7 +274,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						board[x][y].setInCheck(false);
 					}
 				}
-				
+
 				//is black king in check
 				if (turn == 1)
 				{
@@ -285,7 +289,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 					}
 				}
-				
+
 				//is white king in check
 				else
 				{
@@ -300,8 +304,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 					}
 				}
-				
-				
+
+
 				//if either is in check (gonna check for mate)
 				if (board[blackKing.getRow()][blackKing.getColumn()].isInCheck() || board[whiteKing.getRow()][whiteKing.getColumn()].isInCheck())
 				{
@@ -322,7 +326,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 										for (int d = 0; d < 8; d++)
 										{
 											//checking each move
-											
+
 											if (board[a][b].isValidMove(new Location(a, b), new Location(c, d), board))
 											{
 												for (int i = 0; i < 8; i++)
@@ -345,13 +349,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 														}
 													}
 												}
-												
+
 												//if a move moves out of check add it to an arraylist
 												if (!(pretendBoard[white.row][white.column].isPieceInCheck(white, pretendBoard)))
 												{
 													board[a][b].addMove(new Move(a, b, c, d));
 												}
-												
+
 											}
 										}
 									}
@@ -370,9 +374,9 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 						//can declare white in checkmate
 						whiteInMate = temp;
-						
+
 					}
-					
+
 					//for black
 					else
 					{
@@ -403,7 +407,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 								}
 							}
 						}
-						
+
 						//checks to see if black can escape check with any moves
 						boolean temp = true;
 						for (int f = 0; f < 8; f++)
@@ -418,15 +422,15 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						blackInMate = temp;
 					}
 				}
-				
-				
+
+
 				//switches turn
 				if(turn == 1)
 					turn = 2;
 				else
 					turn = 1;
 			}
-			
+
 			//removes dot from all pieces
 			for (int i = 0; i < 8; i++)
 			{
@@ -435,12 +439,24 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					board[i][j].setValid(false);
 				}
 			}
+
+			//Promoting pawns to queens
+			for(int i =0; i<8;i++) {
+				if(board[0][i] instanceof Pawn) {
+					board[0][i] = new Queen(2);
+				}
+						if	(board[7][i] instanceof Pawn) {
+							board[7][i] = new Queen(1);
+						}
+
+			}
 			
+
 			click = false;
 		}
 		this.repaint();
 	}
-	
+
 	public void printBoard(){
 		for(int row = 0; row<8; row++){
 			for(int column = 0; column <8; column++)
@@ -449,30 +465,30 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		}
 		System.out.println();
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 
 }
