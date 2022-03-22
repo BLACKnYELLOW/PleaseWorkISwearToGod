@@ -9,8 +9,9 @@ public class King extends Piece {
 	}
 	
 	public boolean isValidMove(Location from, Location to, Piece[][]b){
-		return super.isValidMove(from, to, b) && super.isValidKingMove(from, to, b) && super.doesItGoIntoCheck(from, to, b);
+		return (super.isValidMove(from, to, b) && super.isValidKingMove(from, to, b) && super.doesItGoIntoCheck(from, to, b)) || (super.isValidMove(from, to, b) && super.isValidCastle(from, to, b) && super.doesItGoIntoCheck(from, to, b)) ;
 	}
+	
 	public String toString(){
 		return "K";
 	}

@@ -32,7 +32,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	                         				// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
 	private Piece[][] pretendBoard;
-	private Piece[][] boardBackup;
 	private int turn;						// used to keep track of who's turn it is - should only be 1 or 2.
 	
 	public GraphicsPanel(){
@@ -44,7 +43,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		// instantiate the instance variables.
 		board = new Piece[8][8];
 		pretendBoard = new Piece[8][8];
-		boardBackup = new Piece[8][8];
 		
 		for(int column = 0; column<8; column++){
 			board[1][column] = new Pawn(1);
@@ -122,11 +120,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				g2.fillRect(i*SQUARE_WIDTH+OFFSET,j*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 			}
 		
-		if(click == true){
-			g2.setColor(Color.YELLOW);
-			g2.fillRect(from.column*SQUARE_WIDTH+OFFSET,from.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
-		}	
-		
 		if (board[blackKing.getRow()][blackKing.getColumn()].isInCheck())
 		{
 			g2.setColor(Color.RED);
@@ -138,6 +131,12 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			g2.setColor(Color.RED);
 			g2.fillRect(whiteKing.column*SQUARE_WIDTH+OFFSET,whiteKing.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 		}
+		
+		if(click == true){
+			g2.setColor(Color.YELLOW);
+			g2.fillRect(from.column*SQUARE_WIDTH+OFFSET,from.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
+		}	
+		
 		
 		// instead of drawing a single piece you should loop through the two-dimensional array and draw each piece except for 
 		// empty spaces.
@@ -158,20 +157,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		
 		if (whiteInMate)
 		{
-			g2.setColor(Color.WHITE);
-			g2.fillRect(0, 0, 750, 750);
-			g2.setColor(Color.BLACK);
-			g2.setFont(new Font("serif", Font.PLAIN, 50));
-			g2.drawString("White Wins!", 220, 300);
-		}
-		
-		if (blackInMate) 
-		{
 			g2.setColor(Color.BLACK);
 			g2.fillRect(0, 0, 750, 750);
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("serif", Font.PLAIN, 50));
 			g2.drawString("Black Wins!", 220, 300);
+		}
+		
+		if (blackInMate) 
+		{
+			g2.setColor(Color.WHITE);
+			g2.fillRect(0, 0, 750, 750);
+			g2.setColor(Color.BLACK);
+			g2.setFont(new Font("serif", Font.PLAIN, 50));
+			g2.drawString("White Wins!", 220, 300);
 		}
 		
 	}
@@ -231,6 +230,44 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				// move piece
 				board[to.row][to.column] = board[from.row][from.column];
 				board[from.row][from.column] = new Space();
+				
+				
+				
+				//castle logic
+				if (whiteKing.row == 0 && whiteKing.column == 3)
+				{
+					if (board[0][5] instanceof King)
+					{
+						board[0][4] = new Rook(1);
+						board[0][7] = new Space();
+							
+					}
+					else if (board[0][1] instanceof King)
+					{
+						board[0][2] = new Rook(1);
+						board[0][0] = new Space();
+					}
+				}
+				if (blackKing.row == 7 && blackKing.column == 3)
+				{
+					if (board[7][5] instanceof King)
+					{
+						board[7][4] = new Rook(2);
+						board[7][7] = new Space();
+							
+					}
+					else if (board[7][1] instanceof King)
+					{
+						board[7][2] = new Rook(2);
+						board[7][0] = new Space();
+					}
+				}
+				
+				
+				
+				
+				
+				
 				
 				for (int i = 0; i < 8; i++)
 				{
