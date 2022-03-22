@@ -12,6 +12,6 @@ public class King extends Piece {
 		return super.isValidMove(from, to, b) && super.isValidKingMove(from, to, b);
 	}
 	public String toString(){
-		return "Ki";
+		return "K";
 	}
 }

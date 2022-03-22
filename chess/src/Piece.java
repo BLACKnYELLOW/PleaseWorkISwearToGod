@@ -8,6 +8,7 @@
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -22,6 +23,10 @@ public class Piece {
 	private int offset; 				// used for drawing images because they all have different widths.
 
 	private boolean valid;
+	
+	private boolean isInCheck;
+	
+	private ArrayList<Move> validMoves;
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Piece(){
@@ -46,6 +51,8 @@ public class Piece {
 		this.offset = offset;
 		this.setTeam(team);		
 		setValid(false);
+		
+		setValidMoves(new ArrayList<>());
 	}
 
 	protected void setImageIcon(String imagePath){
@@ -54,6 +61,7 @@ public class Piece {
 		URL imageURL = cldr.getResource(imagePath);				
 		image = new ImageIcon(imageURL);
 	}
+	
 
 	// method: isValidMove
 	// description: This method checks to see if a move is valid.
@@ -214,5 +222,55 @@ public class Piece {
 
 	public void setValid(boolean valid) {
 		this.valid = valid;
+	}
+
+	public boolean isInCheck() {
+		return isInCheck;
+	}
+	
+	public boolean isPieceInCheck(Location l, Piece[][] b)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				if (b[i][j].isValidMove(new Location(i, j), l, b))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void setInCheck(boolean isInCheck) {
+		this.isInCheck = isInCheck;
+	}
+
+	public ArrayList<Move> getValidMoves() {
+		return validMoves;
+	}
+
+	public void setValidMoves(ArrayList<Move> validMoves) {
+		this.validMoves = validMoves;
+	}
+	
+	public void addMove(Move m)
+	{
+		validMoves.add(m);
+	}
+	
+	public ArrayList<Location> getMovesFrom(int a, int b)
+	{
+		ArrayList<Location> spots = new ArrayList<>();
+		for (Move m : validMoves)
+		{
+			if (m.getFrom1() == a && m.getFrom2() == b)
+			{
+				spots.add(new Location(m.getTo1(), m.getTo2()));
+			}
+		}
+		
+		return spots;
 	}
 }
