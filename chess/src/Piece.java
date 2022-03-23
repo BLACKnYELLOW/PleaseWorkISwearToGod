@@ -71,7 +71,7 @@ public class Piece {
 	// @param - Piece[][]b - the chess board.  a two dimensional array of pieces.
 	// return - boolean - true if the move is valid 
 	public boolean isValidMove(Location from, Location to, Piece[][]b){
-
+		
 		// make sure that you're not landing on a piece from the same team.
 		if (b[from.getRow()][from.getColumn()].equals(b[to.getRow()][to.getColumn()]))
 			return false;
