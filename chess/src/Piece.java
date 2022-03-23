@@ -71,7 +71,7 @@ public class Piece {
 	// @param - Piece[][]b - the chess board.  a two dimensional array of pieces.
 	// return - boolean - true if the move is valid 
 	public boolean isValidMove(Location from, Location to, Piece[][]b){
-
+		
 		// make sure that you're not landing on a piece from the same team.
 		if (b[from.getRow()][from.getColumn()].equals(b[to.getRow()][to.getColumn()]))
 			return false;
@@ -145,6 +145,41 @@ public class Piece {
 			return true;
 		}
 
+	public boolean isValidCastle(Location from, Location to, Piece[][] b)
+	{
+		if (b[from.row][from.column].getTeam() == 1)
+		{
+			if (from.row == 0 && from.column == 3 && b[from.row][from.column] instanceof King)
+			{
+				if (to.row == 0 && to.column == 5 && b[0][7] instanceof Rook && b[0][4] instanceof Space && b[0][5] instanceof Space && b[0][6] instanceof Space)
+				{
+					return true;
+					
+				}
+				else if (to.row == 0 && to.column == 1 && b[0][0] instanceof Rook && b[0][1] instanceof Space && b[0][2] instanceof Space)
+				{
+					return true;
+				}
+			}
+		}
+		else
+		{
+			if (from.row == 7 && from.column == 3 && b[from.row][from.column] instanceof King)
+			{
+				if (to.row == 7 && to.column == 5 && b[7][7] instanceof Rook && b[7][4] instanceof Space && b[7][5] instanceof Space && b[7][6] instanceof Space)
+				{
+					return true;
+					
+				}
+				else if (to.row == 7 && to.column == 1 && b[7][0] instanceof Rook && b[7][1] instanceof Space && b[7][2] instanceof Space)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean isValidKnightMove(Location from, Location to, Piece[][]b)
 	{
 		if (((to.getRow() == from.getRow() + 2 || to.getRow() == from.getRow() - 2) && (to.getColumn() == from.getColumn() + 1 || to.getColumn() == from.getColumn() - 1)) || ((to.getRow() == from.getRow() + 1 || to.getRow() == from.getRow() - 1) && (to.getColumn() == from.getColumn() + 2 || to.getColumn() == from.getColumn() - 2)) )
