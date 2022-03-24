@@ -199,8 +199,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 							board[m.row][m.column].setValid(true);
 						}
 					}
-
-				}
+			
 			} else {
 				//check all moves to see if they are valid
 				for (int i = 0; i < 8; i++)
@@ -219,8 +218,8 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				}
 			}
 			click = true;
+		
 		}
-
 
 		else{
 			to.column = e.getX()/90;
