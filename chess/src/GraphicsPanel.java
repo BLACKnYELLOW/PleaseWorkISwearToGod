@@ -182,7 +182,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 
 
-
 		if(click == false){
 			from.column = e.getX()/90;
 			from.row = e.getY()/90;
