@@ -78,7 +78,12 @@ public class Piece {
 
 		return true;
 	}
-
+	
+	//method: doesItGoIntoCheck
+	//parameters: Location from, Location to, Piece[][] b
+	//return: boolean
+	//description: checks to see if a move will result in a king being put into check
+	//if the move will result in a check it will return false, otherwise it will return true
 	public boolean doesItGoIntoCheck(Location from, Location to, Piece[][] b)
 	{
 		Piece[][] pb = new Piece[8][8];
@@ -144,7 +149,11 @@ public class Piece {
 
 			return true;
 		}
-
+	//method: isValidCastle
+	//parameters: Location from, Location to, Piece[][] b
+	//return: boolean
+	//description: checks to see if a player can castle or not
+	//will return false if player can not castle, return true if they can
 	public boolean isValidCastle(Location from, Location to, Piece[][] b)
 	{
 		if (b[from.row][from.column].getTeam() == 1)
@@ -179,7 +188,12 @@ public class Piece {
 		}
 		return false;
 	}
-	
+	//method: isValidKnightMove
+	//parameters: Location from, Location to, Piece[][]b
+	//return: boolean
+	//description: checks to see if the move a player wants to make is valid
+	//based on the knight's movement behavior then sets x and y coordinates to new values.
+	//returns true if move was valid, and false if it was not valid.
 	public boolean isValidKnightMove(Location from, Location to, Piece[][]b)
 	{
 		if (((to.getRow() == from.getRow() + 2 || to.getRow() == from.getRow() - 2) && (to.getColumn() == from.getColumn() + 1 || to.getColumn() == from.getColumn() - 1)) || ((to.getRow() == from.getRow() + 1 || to.getRow() == from.getRow() - 1) && (to.getColumn() == from.getColumn() + 2 || to.getColumn() == from.getColumn() - 2)) )
@@ -189,6 +203,12 @@ public class Piece {
 		return false;
 	}
 	
+	//method: isValidKingMove
+	//parameters: Location from, Location to, Piece[][]b
+	//return: boolean
+	//description: checks to see if the move a player wants to make is valid
+	//based on the king's movement behavior and if it moves into check or not then sets x and y coordinates to new values.
+	//returns true if move was valid, and false if it was not valid.
 	public boolean isValidKingMove(Location from, Location to, Piece[][]b) {
 		if(
 				/*right UP*/(to.getColumn()==from.getColumn()+1 &&to.getRow()==from.getRow()+1) 
@@ -297,7 +317,7 @@ public class Piece {
 		}
 		return false;
 	}
-
+	
 	public void setInCheck(boolean isInCheck) {
 		this.isInCheck = isInCheck;
 	}
