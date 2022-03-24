@@ -32,7 +32,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 	// after an attempted move.
 	private Piece[][] board; 				// an 8x8 board of 'Pieces'.  Each spot should be filled by one of the chess pieces or a 'space'. 
 	private Piece[][] pretendBoard;
-	private Piece[][] boardBackup;
 	private int turn;						// used to keep track of who's turn it is - should only be 1 or 2.
 
 	public GraphicsPanel(){
@@ -44,7 +43,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 		// instantiate the instance variables.
 		board = new Piece[8][8];
 		pretendBoard = new Piece[8][8];
-		boardBackup = new Piece[8][8];
 
 		for(int column = 0; column<8; column++){
 			board[1][column] = new Pawn(1);
@@ -122,11 +120,6 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				g2.fillRect(i*SQUARE_WIDTH+OFFSET,j*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 			}
 
-		if(click == true){
-			g2.setColor(Color.YELLOW);
-			g2.fillRect(from.column*SQUARE_WIDTH+OFFSET,from.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
-		}	
-
 		if (board[blackKing.getRow()][blackKing.getColumn()].isInCheck())
 		{
 			g2.setColor(Color.RED);
@@ -139,6 +132,13 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			g2.fillRect(whiteKing.column*SQUARE_WIDTH+OFFSET,whiteKing.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
 		}
 
+		
+		if(click == true){
+			g2.setColor(Color.YELLOW);
+			g2.fillRect(from.column*SQUARE_WIDTH+OFFSET,from.row*SQUARE_WIDTH+OFFSET,SQUARE_WIDTH,SQUARE_WIDTH);
+		}	
+    
+    
 		// instead of drawing a single piece you should loop through the two-dimensional array and draw each piece except for 
 		// empty spaces.
 		for(int column = 0; column<8; column++)
@@ -158,20 +158,20 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 
 		if (whiteInMate)
 		{
-			g2.setColor(Color.WHITE);
-			g2.fillRect(0, 0, 750, 750);
-			g2.setColor(Color.BLACK);
-			g2.setFont(new Font("serif", Font.PLAIN, 50));
-			g2.drawString("White Wins!", 220, 300);
-		}
-
-		if (blackInMate) 
-		{
 			g2.setColor(Color.BLACK);
 			g2.fillRect(0, 0, 750, 750);
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("serif", Font.PLAIN, 50));
 			g2.drawString("Black Wins!", 220, 300);
+		}
+
+		if (blackInMate) 
+		{
+			g2.setColor(Color.WHITE);
+			g2.fillRect(0, 0, 750, 750);
+			g2.setColor(Color.BLACK);
+			g2.setFont(new Font("serif", Font.PLAIN, 50));
+			g2.drawString("White Wins!", 220, 300);
 		}
 
 	}
@@ -189,10 +189,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 			//while in check then if neither are mated decide which move
 			if ((board[blackKing.getRow()][blackKing.getColumn()].isInCheck() || board[whiteKing.getRow()][whiteKing.getColumn()].isInCheck()))
 			{
-				if (whiteInMate == false && blackInMate == false)
-				{
 					ArrayList<Location> moves = new ArrayList<>();
-					System.out.println("this ran");
 					moves = board[from.row][from.column].getMovesFrom(from.row, from.column);
 
 					if (moves.size() != 0)
@@ -238,8 +235,39 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 				board[to.row][to.column] = board[from.row][from.column];
 				board[from.row][from.column] = new Space();
 				
-				
 
+				
+				//castle logic
+				if (whiteKing.row == 0 && whiteKing.column == 3)
+				{
+					if (board[0][5] instanceof King)
+					{
+						board[0][4] = new Rook(1);
+						board[0][7] = new Space();
+							
+					}
+					else if (board[0][1] instanceof King)
+					{
+						board[0][2] = new Rook(1);
+						board[0][0] = new Space();
+					}
+				}
+				if (blackKing.row == 7 && blackKing.column == 3)
+				{
+					if (board[7][5] instanceof King)
+					{
+						board[7][4] = new Rook(2);
+						board[7][7] = new Space();
+							
+					}
+					else if (board[7][1] instanceof King)
+					{
+						board[7][2] = new Rook(2);
+						board[7][0] = new Space();
+					}
+				}
+				
+				
 				for (int i = 0; i < 8; i++)
 				{
 					for (int j = 0; j < 8; j++)
@@ -311,6 +339,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 					System.out.println("this");
 					printBoard();
 					Location white = new Location();
+					Location black = new Location();
 					//for white
 					if (turn == 2)
 					{
@@ -389,18 +418,37 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 									{
 										for (int d = 0; d < 8; d++)
 										{
-											if (board[a][b].isValidMove(new Location(a, b), new Location(c, d), board))
-											{
 												//checking each move
-												pretendBoard = board;
-												pretendBoard[c][d] = pretendBoard[a][b];
-												pretendBoard[a][b] = new Space();
-												//if a move moves out of check add it to an arraylist
-												if (!(pretendBoard[blackKing.getRow()][blackKing.getColumn()].isInCheck()))
+												if (board[a][b].isValidMove(new Location(a, b), new Location(c, d), board))
 												{
-													board[a][b].addMove(new Move(a, b, c, d));
+													for (int i = 0; i < 8; i++)
+													{
+														for (int j = 0; j < 8; j++)
+														{
+															pretendBoard[i][j] = board[i][j];
+														}
+													}
+													pretendBoard[c][d] = pretendBoard[a][b];
+													pretendBoard[a][b] = new Space();
+													for (int k = 0; k < 8; k++)
+													{
+														for (int l = 0; l < 8; l++)
+														{
+															if (pretendBoard[k][l] instanceof King && pretendBoard[k][l].getTeam() == 2)
+															{
+																black.setRow(k);
+																black.setColumn(l);
+															}
+														}
+													}
+													
+													//if a move moves out of check add it to an arraylist
+													if (!(pretendBoard[black.row][black.column].isPieceInCheck(black, pretendBoard)))
+													{
+														board[a][b].addMove(new Move(a, b, c, d));
+													}
 												}
-											}
+											
 										}
 									}
 								}
@@ -419,6 +467,7 @@ public class GraphicsPanel extends JPanel implements MouseListener{
 						}
 						//can declare black in checkmate
 						blackInMate = temp;
+						System.out.println(blackInMate);
 					}
 				}
 
